@@ -53,3 +53,7 @@ dkms.conf
 
 # DS_store
 .DS_Store
+
+# program files
+*.out
+*.exe
