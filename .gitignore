@@ -57,3 +57,4 @@ dkms.conf
 # program files
 *.out
 *.exe
+*.class
