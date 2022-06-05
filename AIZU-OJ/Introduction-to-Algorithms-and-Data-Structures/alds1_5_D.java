@@ -9,44 +9,20 @@ class Main {
 	public static final int MOD = 1000000007;
 	public static final long HUGE_NUM = 99999999999999999L;
 	public static final double EPS = 0.000000001;
+    public static final int Infinity = Integer.MAX_VALUE;
+    public static long cnt = 0;
 
     public static void main(String[] args) {
         MyScanner sc = new MyScanner();
         out = new PrintWriter(new BufferedOutputStream(System.out));
 
         // Start writing your solution here. -----------------------------------
-        String s = sc.nextLine();
-        Stack<Integer> stk1 = new Stack<>();
-        Stack<Pair> stk2 = new Stack<>();
-        int sum = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (ch == '\\') stk1.push(i);
-            else if (ch == '/' && !stk1.isEmpty()) {
-                int j = stk1.pop();
-                sum += i - j;
-                int a = i - j;
-                while (!stk2.isEmpty() && stk2.peek().pos > j) {
-                    a += stk2.peek().area;
-                    stk2.pop();
-                }
-                stk2.push(new Pair(j, a));
-            }
-        }
+        int n = sc.nextInt();
+        int[] A = new int[n];
+        for (int i = 0; i < n; i++) A[i] = sc.nextInt();
+        mergeSort(A, 0, n);
+        out.println(cnt);
 
-        out.println(sum);
-        out.print(stk2.size());
-        int size = stk2.size();
-        int[] ans = new int[size];
-        int i = size - 1;
-        while (!stk2.isEmpty()) {
-            ans[i--] = stk2.pop().area;
-        }
-        for (i = 0; i < size; i++) {
-            out.print(" ");
-            out.print(ans[i]);
-        }
-        out.println();
         /*
          * int n = sc.nextInt(); // read input as integer
          * long k = sc.nextLong(); // read input as long
@@ -62,12 +38,30 @@ class Main {
         out.close();
     }
 
-    public static class Pair {
-        public int pos;
-        public int area;
-        public Pair(int pos, int area) {
-            this.pos = pos;
-            this.area = area;
+    public static void merge(int[] A, int left, int mid, int right) {
+        int n1 = mid - left, n2 = right - mid; 
+        int[] L = new int[n1 + 1], R = new int[n2 + 1];
+
+        for (int i = 0; i < n1; i++) L[i] = A[left + i];
+        for (int i = 0; i < n2; i++) R[i] = A[mid + i];
+        L[n1] = R[n2] = Infinity;
+
+        int i = 0, j = 0;
+        for (int k = left; k < right; k++) {
+            if (L[i] <= R[j]) A[k] = L[i++];
+            else {
+                A[k] = R[j++];
+                cnt += n1 - i;
+            }
+        }
+    }
+
+    public static void mergeSort(int[] A, int left, int right) {
+        if (left + 1  < right) {
+            int mid = (left + right) / 2;
+            mergeSort(A, left, mid);
+            mergeSort(A, mid, right);
+            merge(A, left, mid, right);
         }
     }
 

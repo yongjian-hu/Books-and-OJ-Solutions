@@ -15,38 +15,15 @@ class Main {
         out = new PrintWriter(new BufferedOutputStream(System.out));
 
         // Start writing your solution here. -----------------------------------
-        String s = sc.nextLine();
-        Stack<Integer> stk1 = new Stack<>();
-        Stack<Pair> stk2 = new Stack<>();
-        int sum = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (ch == '\\') stk1.push(i);
-            else if (ch == '/' && !stk1.isEmpty()) {
-                int j = stk1.pop();
-                sum += i - j;
-                int a = i - j;
-                while (!stk2.isEmpty() && stk2.peek().pos > j) {
-                    a += stk2.peek().area;
-                    stk2.pop();
-                }
-                stk2.push(new Pair(j, a));
-            }
+        int n = sc.nextInt();
+        int[] A = new int[n];
+        for (int i = 0; i < n; i++) A[i] = sc.nextInt();
+        int cnt = 0;
+        for (int i : A) {
+            if (isPrime(i)) cnt++;
         }
-
-        out.println(sum);
-        out.print(stk2.size());
-        int size = stk2.size();
-        int[] ans = new int[size];
-        int i = size - 1;
-        while (!stk2.isEmpty()) {
-            ans[i--] = stk2.pop().area;
-        }
-        for (i = 0; i < size; i++) {
-            out.print(" ");
-            out.print(ans[i]);
-        }
-        out.println();
+        out.println(cnt);
+        
         /*
          * int n = sc.nextInt(); // read input as integer
          * long k = sc.nextLong(); // read input as long
@@ -62,13 +39,11 @@ class Main {
         out.close();
     }
 
-    public static class Pair {
-        public int pos;
-        public int area;
-        public Pair(int pos, int area) {
-            this.pos = pos;
-            this.area = area;
+    public static boolean isPrime(int i) {
+        for (int j = 2; j <= (int) Math.sqrt(i); j++) {
+            if (i % j == 0) return false;
         }
+        return true;
     }
 
     // -----------PrintWriter for faster output---------------------------------

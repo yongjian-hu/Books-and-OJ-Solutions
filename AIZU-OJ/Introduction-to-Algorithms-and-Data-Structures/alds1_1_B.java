@@ -15,38 +15,8 @@ class Main {
         out = new PrintWriter(new BufferedOutputStream(System.out));
 
         // Start writing your solution here. -----------------------------------
-        String s = sc.nextLine();
-        Stack<Integer> stk1 = new Stack<>();
-        Stack<Pair> stk2 = new Stack<>();
-        int sum = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            if (ch == '\\') stk1.push(i);
-            else if (ch == '/' && !stk1.isEmpty()) {
-                int j = stk1.pop();
-                sum += i - j;
-                int a = i - j;
-                while (!stk2.isEmpty() && stk2.peek().pos > j) {
-                    a += stk2.peek().area;
-                    stk2.pop();
-                }
-                stk2.push(new Pair(j, a));
-            }
-        }
-
-        out.println(sum);
-        out.print(stk2.size());
-        int size = stk2.size();
-        int[] ans = new int[size];
-        int i = size - 1;
-        while (!stk2.isEmpty()) {
-            ans[i--] = stk2.pop().area;
-        }
-        for (i = 0; i < size; i++) {
-            out.print(" ");
-            out.print(ans[i]);
-        }
-        out.println();
+        int a = sc.nextInt(), b = sc.nextInt();
+        out.println(gcd(a, b));
         /*
          * int n = sc.nextInt(); // read input as integer
          * long k = sc.nextLong(); // read input as long
@@ -62,13 +32,9 @@ class Main {
         out.close();
     }
 
-    public static class Pair {
-        public int pos;
-        public int area;
-        public Pair(int pos, int area) {
-            this.pos = pos;
-            this.area = area;
-        }
+    public static int gcd(int a, int b) {
+        if (a % b == 0) return b;
+        return gcd(b, a % b);
     }
 
     // -----------PrintWriter for faster output---------------------------------
